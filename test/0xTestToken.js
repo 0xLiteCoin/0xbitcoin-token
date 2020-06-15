@@ -1,4 +1,4 @@
-var _0xBitcoinToken = artifacts.require("./_0xBitcoinToken.sol");
+var _0xTestToken = artifacts.require("./_0xTestToken.sol");
 
 var ethUtil =  require('ethereumjs-util');
 var web3utils =  require('web3-utils');
@@ -21,13 +21,13 @@ let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
 //Test rewards decreasing
 
 
-contract('_0xBitcoinToken', function(accounts) {
+contract('_0xTestToken', function(accounts) {
 
 
     it("can deploy ", async function () {
 
       console.log( 'deploying token' )
-      var tokenContract = await _0xBitcoinToken.deployed();
+      var tokenContract = await _0xTestToken.deployed();
 
 
 
@@ -132,43 +132,8 @@ it("can be mined", async function () {
 
 
 
-it("transferAnyERC20Token cannot mint tokens ", async function () {
-    networkInterfaceHelper.init(web3,tokenContract,test_account);
-
-
-    //try to mint 1000 tokens as the deployer / owner 
-    var txData = this.web3.eth.abi.encodeFunctionCall({
-            name: 'transferAnyERC20Token',
-            type: 'function',
-            inputs: [{
-                type: 'address',
-                name: 'tokenAddress'
-            },{
-                type: 'uint',
-                name: 'tokens'
-            }]
-        }, [tokenContract.options.address, 1000 * 10^8 ]);
-
-    var txOptions = {
-      nonce: web3Utils.toHex(txCount),
-      gas: web3Utils.toHex(1704624),
-      gasPrice: web3Utils.toHex(2e9), // 2 Gwei
-      to: addressTo,
-      from: addressFrom,
-      data: txData
-    };
-
-    var response = await new Promise(function (result,error) {
-        networkInterfaceHelper.sendSignedRawTransaction( web3,txOptions,test_account.address,test_account, function(err, res) {
-         if (err) error(err)
-           result(res)
-       })
-
-     }
-
-     console.log(response)
-
-     assert.ok( response )
+it(" Halvenings occur properly  ", async function () {
+      //TODO 
 
 });
 
